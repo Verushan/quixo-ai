@@ -1,0 +1,1 @@
+enum Piece { X, O, EMPTY };
