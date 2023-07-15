@@ -108,7 +108,7 @@ void Board::precomputeDirections() {
     }
 }
 
-std::vector<Move> Board::generateMoves() {
+std::vector<Move> Board::generateValidMoves() {
     std::vector<Move> moves;
     int index = 0;
 
@@ -123,29 +123,43 @@ std::vector<Move> Board::generateMoves() {
     return moves;
 }
 
-void Board::printMoves() {
-    std::vector<Move> moves = generateMoves();
+void Board::printValidMoves() {
+    std::vector<Move> moves = generateValidMoves();
+    std::vector<std::vector<std::string>> output(
+        BOARD_DIM, std::vector<std::string>(BOARD_DIM));
 
     for (auto move : moves) {
         int row = move.startSquare / BOARD_DIM;
         int col = move.startSquare % BOARD_DIM;
 
-        printf("{%d, %d} ->", row, col);
-
         switch (move.direction) {
         case North:
-            printf("N\n");
+            output[row][col] += "N";
             break;
         case South:
-            printf("S\n");
+            output[row][col] += "S";
             break;
         case East:
-            printf("E\n");
+            output[row][col] += "E";
             break;
         case West:
-            printf("W\n");
+            output[row][col] += "W";
             break;
         }
+    }
+
+    for (int i = BOARD_DIM - 1; i >= 0; --i) {
+        for (int j = 0; j < BOARD_DIM; ++j) {
+            std::string value = output[i][j];
+
+            while (value.length() < 3) {
+                value += "_";
+            }
+
+            std::cout << value << " ";
+        }
+
+        std::cout << "\n";
     }
 
     printf("Number of valid moves: %ld\n", moves.size());

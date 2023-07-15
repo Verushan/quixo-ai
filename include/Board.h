@@ -23,7 +23,7 @@ class Board {
     Board();
     Board(const std::string &fen);
     void loadBoardAsFen(const std::string &fen);
-    std::vector<Move> generateMoves();
+    std::vector<Move> generateValidMoves();
     void display();
-    void printMoves();
+    void printValidMoves();
 };

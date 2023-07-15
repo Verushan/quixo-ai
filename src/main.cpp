@@ -6,7 +6,6 @@ using namespace std;
 
 int main() {
     Board board;
-    board.display();
-    board.printMoves();
+    board.printValidMoves();
     return 0;
 }
