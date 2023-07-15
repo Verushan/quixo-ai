@@ -9,9 +9,15 @@ const int Board::OUTER_INDICES[Board::NUM_OUTER_INDICES] = {
 
 std::vector<Direction> Board::mValidDirections[Board::NUM_OUTER_INDICES];
 
-Board::Board() { mBoard = std::vector<Piece>(BOARD_LENGTH, Piece::EMPTY); }
+Board::Board() {
+    mBoard = std::vector<Piece>(BOARD_LENGTH, EMPTY);
+    precomputeDirections();
+    loadBoardAsFen(STARTING_FEN);
+}
 
-Board::Board(const std::string &fen) : Board() {
+Board::Board(const std::string &fen) : Board() { loadBoardAsFen(fen); }
+
+void Board::loadBoardAsFen(const std::string &fen) {
     std::stringstream fenParts(fen);
     std::string sBoard;
 
@@ -57,8 +63,6 @@ Board::Board(const std::string &fen) : Board() {
 
         ++file;
     }
-
-    precomputeDirections();
 }
 
 void Board::precomputeDirections() {
@@ -110,7 +114,7 @@ std::vector<Move> Board::generateMoves() {
 
     for (int indice : OUTER_INDICES) {
         if (mBoard[indice] == mSideToPlay || mBoard[indice] == EMPTY) {
-            for (Direction dir : mValidDirections[index]) {
+            for (Direction dir : mValidDirections[index++]) {
                 moves.emplace_back(Move(indice, dir));
             }
         }
@@ -143,6 +147,8 @@ void Board::printMoves() {
             break;
         }
     }
+
+    printf("Number of valid moves: %ld\n", moves.size());
 }
 
 void Board::display() {

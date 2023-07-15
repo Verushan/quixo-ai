@@ -22,6 +22,7 @@ class Board {
 
     Board();
     Board(const std::string &fen);
+    void loadBoardAsFen(const std::string &fen);
     std::vector<Move> generateMoves();
     void display();
     void printMoves();
