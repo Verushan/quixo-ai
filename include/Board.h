@@ -24,4 +24,5 @@ class Board {
     Board(const std::string &fen);
     std::vector<Move> generateMoves();
     void display();
+    void printMoves();
 };
