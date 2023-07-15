@@ -20,7 +20,10 @@ $(EXECUTABLE): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	rm -rf $(OBJ_DIR)/*.o $(EXECUTABLE)
+
+.PHONY: all create_directories clean
