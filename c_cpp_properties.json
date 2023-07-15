@@ -2,8 +2,8 @@
     {
         "name": "Win32",
         "includePath": [
-            "src/",
-            "include/",
+            "/src",
+            "include",
             "${default}"
         ],
         "defines": [

@@ -14,7 +14,7 @@ SRC_DIR = src
 SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 
 # Object files directory
-OBJ_DIR = obj
+OBJ_DIR = .
 
 # Object files
 OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
