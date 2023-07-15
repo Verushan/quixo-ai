@@ -22,6 +22,5 @@ $(EXECUTABLE): $(OBJS)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
-# Clean the generated files
 clean:
 	rm -rf $(OBJ_DIR)/*.o $(EXECUTABLE)
