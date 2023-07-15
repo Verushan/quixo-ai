@@ -114,10 +114,12 @@ std::vector<Move> Board::generateValidMoves() {
 
     for (int indice : OUTER_INDICES) {
         if (mBoard[indice] == mSideToPlay || mBoard[indice] == EMPTY) {
-            for (Direction dir : mValidDirections[index++]) {
+            for (Direction dir : mValidDirections[index]) {
                 moves.emplace_back(Move(indice, dir));
             }
         }
+
+        ++index;
     }
 
     return moves;
