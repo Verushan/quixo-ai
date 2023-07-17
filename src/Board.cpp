@@ -73,34 +73,23 @@ void Board::precomputeDirections() {
         int col = indice % BOARD_DIM;
 
         if (row == 0 || row == BOARD_DIM - 1) {
-            if (row == 0) {
-                mValidDirections[index].push_back(North);
-            } else {
-                mValidDirections[index].push_back(South);
-            }
+            mValidDirections[index].push_back(row == 0 ? North : South);
 
             if (col > 0 && col < BOARD_DIM - 1) {
                 mValidDirections[index].push_back(East);
                 mValidDirections[index].push_back(West);
-            } else if (col == 0) {
-                mValidDirections[index].push_back(East);
             } else {
-                mValidDirections[index].push_back(West);
+                mValidDirections[index].push_back(col == 0 ? East : West);
             }
+
         } else {
-            if (col == 0) {
-                mValidDirections[index].push_back(East);
-            } else {
-                mValidDirections[index].push_back(West);
-            }
+            mValidDirections[index].push_back(col == 0 ? East : West);
 
             if (row > 0 && row < BOARD_DIM - 1) {
                 mValidDirections[index].push_back(North);
                 mValidDirections[index].push_back(South);
-            } else if (row == 0) {
-                mValidDirections[index].push_back(North);
             } else {
-                mValidDirections[index].push_back(South);
+                mValidDirections[index].push_back(row == 0 ? North : South);
             }
         }
 
