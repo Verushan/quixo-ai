@@ -21,9 +21,14 @@ class Board {
     const static std::string STARTING_FEN;
 
     Board();
+
     Board(const std::string &fen);
+
     void loadBoardAsFen(const std::string &fen);
+
     std::vector<Move> generateValidMoves();
+
     void display();
+
     void printValidMoves();
 };
