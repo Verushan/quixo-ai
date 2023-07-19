@@ -50,15 +50,15 @@ void Board::loadBoardAsFen(const std::string &fen) {
 
         switch (c) {
         case 'X':
-            mBoard[rank * BOARD_DIM + file] = Piece::X;
+            mBoard[rank * BOARD_DIM + file] = X;
             break;
 
         case 'O':
-            mBoard[rank * BOARD_DIM + file] = Piece::O;
+            mBoard[rank * BOARD_DIM + file] = O;
             break;
 
         default:
-            mBoard[rank * BOARD_DIM + file] = Piece::EMPTY;
+            mBoard[rank * BOARD_DIM + file] = EMPTY;
         }
 
         ++file;
@@ -114,16 +114,72 @@ std::vector<Move> Board::generateValidMoves() {
     return moves;
 }
 
+void Board::makeMove(const Move &move) {
+    int start = move.getStartSquare();
+    int end = 0, step = 0;
+
+    Piece movingPiece = mBoard[start];
+    Direction movingDirection = move.getDirection();
+
+    printf("Piece at row %d col %d moving ", start / BOARD_DIM,
+           start % BOARD_DIM);
+
+    switch (movingDirection) {
+    case North:
+        step = BOARD_DIM;
+        end = NORTH_ROW_START_INDEX + start % BOARD_DIM;
+        printf("North\n");
+        break;
+    case South:
+        step = BOARD_DIM;
+        end = SOUTH_ROW_START_INDEX + start % BOARD_DIM;
+        printf("South\n");
+        break;
+    case East:
+        step = 1;
+        end = EAST_ROW_START_INDEX + start / BOARD_DIM * BOARD_DIM;
+        printf("East\n");
+        break;
+    case West:
+        step = 1;
+        end = WEST_ROW_START_INDEX + start / BOARD_DIM * BOARD_DIM;
+        printf("West\n");
+        break;
+    }
+
+    if (movingDirection == North || movingDirection == East) {
+        for (int i = start; i < end; i += step) {
+            mBoard[i] = mBoard[i + step];
+        }
+    } else {
+        for (int i = start; i > end; i -= step) {
+            mBoard[i] = mBoard[i - step];
+        }
+    }
+
+    if (movingPiece == EMPTY) {
+        movingPiece = mSideToPlay;
+    }
+
+    mSideToPlay = (mSideToPlay == X ? O : X);
+    ++mMoveCount;
+
+    mBoard[end] = movingPiece;
+}
+
 void Board::printValidMoves() {
     std::vector<Move> moves = generateValidMoves();
     std::vector<std::vector<std::string>> output(
         BOARD_DIM, std::vector<std::string>(BOARD_DIM));
 
     for (auto move : moves) {
-        int row = move.startSquare / BOARD_DIM;
-        int col = move.startSquare % BOARD_DIM;
+        int startSquare = move.getStartSquare();
+        Direction direction = move.getDirection();
 
-        switch (move.direction) {
+        int row = startSquare / BOARD_DIM;
+        int col = startSquare % BOARD_DIM;
+
+        switch (direction) {
         case North:
             output[row][col] += "N";
             break;

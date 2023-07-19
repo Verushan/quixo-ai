@@ -1,12 +1,16 @@
+#include <string>
+
 enum Direction { North, South, East, West };
 
 class Move {
-  public:
-    int startSquare;
-    Direction direction;
+  private:
+    int mStartSquare;
+    Direction mDirection;
 
-    Move(int startSquare, Direction direction) {
-        this->startSquare = startSquare;
-        this->direction = direction;
-    }
+  public:
+    Move(int startSquare, Direction direction);
+
+    int getStartSquare() const;
+
+    Direction getDirection() const;
 };
