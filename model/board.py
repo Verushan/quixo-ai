@@ -49,7 +49,7 @@ class Board:
         self.board = np.full(
             shape=(Board.BOARD_LEN,),
             fill_value=Piece.EMPTY, 
-            dtype=np.uint8
+            dtype=np.int8
         )
 
         col = 0
@@ -108,7 +108,31 @@ class Board:
 
         self.board[end] = moving_piece
 
-    
+    def _sum_line(self, start, end, step):
+        return self.board[start:end:step].sum()
+
+    def is_terminal(self):
+        win_sum = 5 * self.side_to_play
+
+        for row in range(Board.BOARD_DIM):
+            start = row * Board.BOARD_DIM
+            end = start + Board.BOARD_DIM
+
+            if (self._sum_line(start, end, 1) == win_sum):
+                return True
+
+        for col in range(Board.BOARD_DIM):
+            start = col
+            end = self.NORTH_ROW_START_INDEX + col + 1
+
+            if (self._sum_line(start, end, Board.BOARD_DIM) == win_sum):
+                return True
+
+        if (self._sum_line(0, Board.BOARD_LEN, Board.BOARD_DIM + 1) == win_sum):
+            return True
+        
+        return self._sum_line(Board.BOARD_DIM - 1, Board.BOARD_LEN - 1, Board.BOARD_DIM - 1) == win_sum
+
     def make_move(self, move: Move):
         moving_piece = self.board[move.start_square]
 

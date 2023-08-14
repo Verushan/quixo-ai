@@ -1,7 +1,7 @@
 from enum import IntEnum
 
 class Piece(IntEnum):
-    X = 0
+    X = -1
+    EMPTY = 0
     O = 1
-    EMPTY = 2
     

@@ -17,13 +17,13 @@ class QuixoEnv(gym.Env):
 
     def __init__(self, render_mode=None, fen: str = None):
         self.observation_space = spaces.Dict({
-            "board": spaces.Box(Piece.X, Piece.EMPTY, shape=(self.BOARD_LEN,), dtype=np.uint8),
+            "board": spaces.Box(int(Piece.X), int(Piece.O), shape=(Board.BOARD_LEN,), dtype=np.int8),
             "player": spaces.Discrete(2)
         })
 
         self.action_space = spaces.Dict({
             "direction": spaces.Discrete(4),
-            "square": spaces.Box(0, self.BOARD_LEN - 1, shape=(1,), dtype=np.uint8)
+            "square": spaces.Box(0, Board.BOARD_LEN - 1, shape=(1,), dtype=np.int8)
         })
 
         assert render_mode is None or render_mode in self.metadata["render_modes"]
@@ -33,6 +33,7 @@ class QuixoEnv(gym.Env):
         else:
             self.board = Board(fen)
 
+        self.render_mode = render_mode
         self.window = None
         self.clock = None
 
@@ -55,6 +56,12 @@ class QuixoEnv(gym.Env):
     def step(self, action):
         move = Move(action["square"], action["direction"])
         self.board.make_move(move)
+
+        observation = self._get_obs()
+        is_terminal = self.board.is_terminal()
+        reward = 1 if is_terminal else 0
+
+        return observation, reward, is_terminal, False, None
 
     def render(self):
         if (self.render_mode == "ansi"):
