@@ -175,6 +175,18 @@ class Board:
         move.start_square = start
         move.direction = moving_direction
 
+    def generate_valid_moves(self):
+        valid_moves = []
+
+        for index, indice in enumerate(self.OUTER_INDICES):
+            piece = self.board[indice]
+
+            if (piece == self.side_to_play or piece == Piece.EMPTY):
+                for direction in self.VALID_MOVES_FOR_INDICES[index]:
+                    valid_moves.append(Move(indice, direction))
+        
+        return valid_moves
+
     
     def display(self):
         for i in range(Board.BOARD_DIM - 1, -1, -1):

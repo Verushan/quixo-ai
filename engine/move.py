@@ -11,3 +11,8 @@ class Move:
         self.start_square = start_square
         self.direction = direction
         self.was_turned = False
+    
+    def __repr__(self) -> str:
+        str_direction = Direction(self.direction).name
+
+        return f"Square {self.start_square} going {str_direction}"
