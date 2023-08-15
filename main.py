@@ -1,4 +1,4 @@
-from quixo_game import Board, Move, Direction, QuixoEnv
+from engine import Board, Move, Direction, QuixoEnv
 
 quixo = QuixoEnv(render_mode="ansi")
 quixo.render()
