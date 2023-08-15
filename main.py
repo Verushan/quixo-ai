@@ -1,10 +1,10 @@
-from model import Board, Move, Direction, QuixoEnv
+from quixo_game import Board, Move, Direction, QuixoEnv
 
 quixo = QuixoEnv(render_mode="ansi")
 quixo.render()
 result = quixo.step({
-    "square": 0,
-    "direction": Direction.NORTH,
+    "square": 20,
+    "direction": Direction.EAST,
 })
 
 print(result)
