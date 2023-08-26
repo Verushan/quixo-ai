@@ -10,7 +10,9 @@ class GameManager:
     def __init__(self) -> None:
         pass
 
-    def play_match(self, fen: str, agent_x: Agent, agent_o: Agent) -> None:
+    def play_match(
+        self, agent_x: Agent, agent_o: Agent, fen: str = Board.STARTING_FEN
+    ) -> None:
         board = Board(fen)
         is_terminal = board.is_terminal() != StateInfo.IN_PROGRESS
 
