@@ -1,9 +1,11 @@
 from .board import Board, StateInfo, Piece
 from .agent import Agent
+import time
 
 
 class GameManager:
     MOVE_LIMIT = 150
+    DELAY = 1
 
     def __init__(self) -> None:
         pass
@@ -22,15 +24,18 @@ class GameManager:
             print(first_agent_move)
             board.make_move(first_agent_move)
             board.display()
+            time.sleep(GameManager.DELAY)
+
             is_terminal = board.is_terminal() != StateInfo.IN_PROGRESS
 
             if is_terminal:
                 break
 
             second_agent_move = second_agent.get_move(board)
-            print(first_agent_move)
+            print(second_agent_move)
             board.make_move(second_agent_move)
             board.display()
+            time.sleep(GameManager.DELAY)
             is_terminal = board.is_terminal() != StateInfo.IN_PROGRESS
 
         result = board.is_terminal()
