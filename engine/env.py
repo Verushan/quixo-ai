@@ -61,7 +61,7 @@ class QuixoEnv(gym.Env):
         is_terminal = self.board.is_terminal()
         reward = 1 if is_terminal else 0
 
-        return observation, reward, is_terminal, False, None
+        return observation, reward, is_terminal
 
     def render(self):
         if (self.render_mode == "ansi"):

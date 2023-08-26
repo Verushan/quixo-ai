@@ -1,12 +1,23 @@
-from engine import Board, Move, Direction, QuixoEnv
+from engine import Direction, QuixoEnv, Board
 
 quixo = QuixoEnv(render_mode="ansi")
 quixo.render()
-result = quixo.step({
+
+action = {
     "square": 0,
     "direction": Direction.NORTH,
-})
+}
 
-print(result)
+observation, reward, is_terminal = quixo.step(action)
 
-quixo.render()
+print("Feedback after taking action")
+
+board = Board()
+board.board = observation["board"]
+board.side_to_play = observation["player"]
+board.move_count = quixo.board.move_count
+
+board.display()
+
+print(reward)
+print(is_terminal)
