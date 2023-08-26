@@ -16,5 +16,5 @@ setup(
     author_email="verushannaidoo@gmail.com",
     url="https://github.com/Elementrix08/quixo-ai",
     license=license,
-    packages=find_packages(exclude=("tests", "docs"))
+    packages=find_packages(exclude=("tests", "docs")),
 )
