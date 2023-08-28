@@ -1,2 +1,2 @@
 from .logic import *
-from .ai import MinimaxAgent, RandomAgent
+from .ai import *

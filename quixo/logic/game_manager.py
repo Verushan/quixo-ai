@@ -14,7 +14,7 @@ class GameManager:
         self, agent_x: Agent, agent_o: Agent, fen: str = Board.STARTING_FEN
     ) -> None:
         board = Board(fen)
-        is_terminal = board.is_terminal() != StateInfo.IN_PROGRESS
+        is_terminal = board.get_state_info() != StateInfo.IN_PROGRESS
 
         if board.side_to_play == Piece.X:
             first_agent, second_agent = agent_x, agent_o
@@ -28,7 +28,7 @@ class GameManager:
             board.display()
             time.sleep(GameManager.DELAY)
 
-            is_terminal = board.is_terminal() != StateInfo.IN_PROGRESS
+            is_terminal = board.get_state_info() != StateInfo.IN_PROGRESS
 
             if is_terminal:
                 break
@@ -38,9 +38,9 @@ class GameManager:
             board.make_move(second_agent_move)
             board.display()
             time.sleep(GameManager.DELAY)
-            is_terminal = board.is_terminal() != StateInfo.IN_PROGRESS
+            is_terminal = board.get_state_info() != StateInfo.IN_PROGRESS
 
-        result = board.is_terminal()
+        result = board.get_state_info()
         self.print_outcome(result)
 
     @staticmethod

@@ -20,6 +20,9 @@ class Board:
     EAST_ROW_START_INDEX = 4
     WEST_ROW_START_INDEX = 0
 
+    X_WIN_SUM = BOARD_DIM * Piece.X
+    O_WIN_SUM = BOARD_DIM * Piece.O
+
     STARTING_FEN = "5/5/5/5/5 X 0"
 
     OUTER_INDICES = np.array(
@@ -123,9 +126,9 @@ class Board:
     def _sum_line(self, start, end, step) -> int:
         return self.board[start:end:step].sum()
 
-    def is_terminal(self) -> StateInfo:
-        x_win_sum = Board.BOARD_DIM * Piece.X
-        o_win_sum = Board.BOARD_DIM * Piece.O
+    def get_state_info(self) -> StateInfo:
+        x_line = False
+        o_line = False
 
         for row in range(Board.BOARD_DIM):
             start = row * Board.BOARD_DIM
@@ -133,10 +136,10 @@ class Board:
 
             curr_sum = self._sum_line(start, end, 1)
 
-            if curr_sum == x_win_sum:
-                return StateInfo.X_WIN
-            elif curr_sum == o_win_sum:
-                return StateInfo.O_WIN
+            if curr_sum == self.X_WIN_SUM:
+                x_line = True
+            elif curr_sum == self.O_WIN_SUM:
+                o_line = True
 
         for col in range(Board.BOARD_DIM):
             start = col
@@ -144,29 +147,41 @@ class Board:
 
             curr_sum = self._sum_line(start, end, Board.BOARD_DIM)
 
-            if curr_sum == x_win_sum:
-                return StateInfo.X_WIN
-            elif curr_sum == o_win_sum:
-                return StateInfo.O_WIN
+            if curr_sum == self.X_WIN_SUM:
+                x_line = True
+            elif curr_sum == self.O_WIN_SUM:
+                o_line = True
 
         # Main diagonal
         start, end = 0, Board.BOARD_LEN
         step = Board.BOARD_DIM + 1
         main_diag_sum = self._sum_line(start, end, step)
 
-        if main_diag_sum == x_win_sum:
-            return StateInfo.X_WIN
-        elif main_diag_sum == o_win_sum:
-            return StateInfo.O_WIN
+        if main_diag_sum == self.X_WIN_SUM:
+            x_line = True
+        elif main_diag_sum == self.O_WIN_SUM:
+            o_line = True
 
         # Anti diagonal
         start, end = Board.BOARD_DIM - 1, Board.BOARD_LEN - 1
         step = Board.BOARD_DIM - 1
         anti_diag_sum = self._sum_line(start, end, step)
 
-        if anti_diag_sum == x_win_sum:
+        if anti_diag_sum == self.X_WIN_SUM:
+            x_line = True
+        elif anti_diag_sum == self.O_WIN_SUM:
+            o_line = True
+
+        if x_line and o_line:
+            if self.side_to_play == Piece.X:
+                return StateInfo.X_WIN
+            else:
+                return StateInfo.O_WIN
+
+        if x_line:
             return StateInfo.X_WIN
-        elif anti_diag_sum == o_win_sum:
+
+        if o_line:
             return StateInfo.O_WIN
 
         return StateInfo.IN_PROGRESS
@@ -244,5 +259,8 @@ class Board:
                 print("Side to play: X")
             else:
                 print("Side to play: O")
+
+            state_info = self.get_state_info()
+            print("Terminal status:", StateInfo(state_info).name)
 
         print()
