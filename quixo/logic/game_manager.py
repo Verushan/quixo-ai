@@ -23,7 +23,7 @@ class GameManager:
 
         while not is_terminal and board.move_count <= GameManager.MOVE_LIMIT:
             first_agent_move = first_agent.get_move(board)
-            print(first_agent_move)
+            print(first_agent.get_name(), "played", first_agent_move)
             board.make_move(first_agent_move)
             board.display()
             time.sleep(GameManager.DELAY)
@@ -34,7 +34,7 @@ class GameManager:
                 break
 
             second_agent_move = second_agent.get_move(board)
-            print(second_agent_move)
+            print(second_agent.get_name(), "played", second_agent_move)
             board.make_move(second_agent_move)
             board.display()
             time.sleep(GameManager.DELAY)

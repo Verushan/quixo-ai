@@ -104,10 +104,10 @@ class Board:
 
         return end
 
-    def _update_board(self, moving_piece: Piece, move: Move) -> None:
-        start = move.start_square
-        moving_direction = move.direction
-        end, step = self._get_end_square(move), 0
+    def _update_board(
+        self, moving_piece: Piece, start: int, end: int, moving_direction: Direction
+    ) -> None:
+        step = 0
 
         if moving_direction == Direction.NORTH or moving_direction == Direction.SOUTH:
             step = Board.BOARD_DIM
@@ -195,7 +195,8 @@ class Board:
 
         self.move_count += 1
         self.side_to_play = Piece.X if self.side_to_play == Piece.O else Piece.O
-        self._update_board(moving_piece, move)
+        end_square = self._get_end_square(move)
+        self._update_board(moving_piece, move.start_square, end_square, move.direction)
 
     def unmake_move(self, move: Move) -> None:
         self.side_to_play = Piece.X if self.side_to_play == Piece.O else Piece.O
@@ -207,25 +208,18 @@ class Board:
         moving_piece = self.board[end]
         moving_direction = move.direction
 
-        if moving_direction == Direction.NORTH:
-            move.direction = Direction.SOUTH
-        elif moving_direction == Direction.SOUTH:
-            move.direction = Direction.NORTH
-        elif moving_direction == Direction.EAST:
-            move.direction = Direction.WEST
-        else:
-            move.direction = Direction.EAST
-
-        move.start_square = end
-
         if move.was_turned:
             moving_piece = Piece.EMPTY
             move.was_turned = False
 
-        self._update_board(moving_piece, move)
-
-        move.start_square = start
-        move.direction = moving_direction
+        if moving_direction == Direction.NORTH:
+            self._update_board(moving_piece, end, start, Direction.SOUTH)
+        elif moving_direction == Direction.SOUTH:
+            self._update_board(moving_piece, end, start, Direction.NORTH)
+        elif moving_direction == Direction.EAST:
+            self._update_board(moving_piece, end, start, Direction.WEST)
+        else:
+            self._update_board(moving_piece, end, start, Direction.EAST)
 
     def generate_valid_moves(self) -> list:
         valid_moves = []

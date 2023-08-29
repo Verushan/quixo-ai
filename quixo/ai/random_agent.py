@@ -1,6 +1,4 @@
-from quixo.logic.board import Board
-from quixo.logic.move import Move
-from ..logic import Agent, Move
+from ..logic import Agent, Move, Board
 import numpy as np
 
 
@@ -12,3 +10,6 @@ class RandomAgent(Agent):
         moves = board.generate_valid_moves()
         move_index = np.random.choice(len(moves))
         return moves[move_index]
+
+    def get_name(self) -> str:
+        return "Random Agent"

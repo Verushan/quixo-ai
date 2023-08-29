@@ -8,3 +8,6 @@ class Agent:
 
     def get_move(self, board: Board) -> Move:
         raise NotImplementedError
+
+    def get_name(self) -> str:
+        raise NotImplementedError
