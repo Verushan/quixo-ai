@@ -2,6 +2,7 @@ import numpy as np
 from .move import Direction, Move
 from .piece import Piece
 from enum import IntEnum
+from tabulate import tabulate
 
 
 class StateInfo(IntEnum):
@@ -234,17 +235,18 @@ class Board:
         return valid_moves
 
     def display(self, minimal: bool = False):
+        board = np.full((Board.BOARD_DIM, Board.BOARD_DIM), "_", dtype=str)
+
         for i in range(Board.BOARD_DIM - 1, -1, -1):
             for j in range(Board.BOARD_DIM):
                 piece = self.board[i * Board.BOARD_DIM + j]
 
                 if piece == Piece.X:
-                    print("X", end=" ")
+                    board[i, j] = "X"
                 elif piece == Piece.O:
-                    print("O", end=" ")
-                else:
-                    print("_", end=" ")
-            print()
+                    board[i, j] = "O"
+
+        print(tabulate(board, tablefmt="fancy_grid", stralign="center"))
 
         if minimal == False:
             print("Move count:", self.move_count)

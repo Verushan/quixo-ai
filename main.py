@@ -1,12 +1,4 @@
-from quixo import (
-    MinimaxAgent,
-    RandomAgent,
-    GameManager,
-    Board,
-    Move,
-    Direction,
-    StateInfo,
-)
+from quixo import MinimaxAgent, RandomAgent, GameManager
 
 manager = GameManager()
 agent1 = RandomAgent()
