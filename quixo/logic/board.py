@@ -246,7 +246,7 @@ class Board:
                 elif piece == Piece.O:
                     board[i, j] = "O"
 
-        print(tabulate(board, tablefmt="fancy_grid", stralign="center"))
+        print(tabulate(np.flipud(board), tablefmt="fancy_grid", stralign="center"))
 
         if minimal == False:
             print("Move count:", self.move_count)
