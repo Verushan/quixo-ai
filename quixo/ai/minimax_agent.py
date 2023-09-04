@@ -24,7 +24,7 @@ class MinimaxAgent(Agent):
 
             board.unmake_move(move)
 
-            if curr_score > best_score:
+            if curr_score > best_score or best_move is None:
                 best_score = curr_score
                 best_move = move
 
@@ -59,7 +59,7 @@ class MinimaxAgent(Agent):
             else:
                 result = -MinimaxAgent.MAX
 
-            return result if is_maximizing else -result
+            return result - depth if is_maximizing else -result + depth
 
         if depth == 0:
             evaluation = self.evaluate(board)
