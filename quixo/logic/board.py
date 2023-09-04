@@ -84,7 +84,8 @@ class Board:
 
             col += 1
 
-    def _get_end_square(self, move: Move) -> int:
+    @staticmethod
+    def _get_end_square(move: Move) -> int:
         start_square = move.start_square
         direction = move.direction
 

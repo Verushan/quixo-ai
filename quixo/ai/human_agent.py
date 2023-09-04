@@ -5,10 +5,10 @@ import numpy as np
 
 
 class HumanAgent(Agent):
-    def __init__(self, input_mode: str = "human") -> None:
+    def __init__(self, use_ui_controls: bool = True) -> None:
         super().__init__()
-        self.input_mode = input_mode
         self.punctuation_translation = str.maketrans("", "", string.punctuation)
+        self.use_ui_controls = use_ui_controls
 
     def clean_input(self, text: str):
         string = input(text)
@@ -42,7 +42,6 @@ class HumanAgent(Agent):
                         row = Board.BOARD_DIM - (y // GUI.PIECE_HEIGHT) - 1
                         col = x // GUI.PIECE_WIDTH
                         square = row * Board.BOARD_DIM + col
-                        print("Square index", square)
 
                         if square in Board.OUTER_INDICES:
                             piece = board.board[square]
@@ -60,7 +59,7 @@ class HumanAgent(Agent):
     def get_move(self, board: Board) -> Move:
         move = None
 
-        if self.input_mode == "human":
+        if self.use_ui_controls:
             return self.get_ui_move(board)
         else:
             square = int(self.clean_input("Enter the square index "))

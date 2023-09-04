@@ -5,15 +5,14 @@ import pygame as pg
 
 
 class GameManager:
-    FPS = 30
     MOVE_LIMIT = 150
-    DELAY = 1
 
     def __init__(self) -> None:
         self.gui = GUI()
 
     def _process_move(self, board: Board, agent: Agent):
         move = agent.get_move(board)
+        self.gui.make_move(board.board, move, board.side_to_play)
         board.make_move(move)
         print(agent.get_name(), "played", move)
 
@@ -32,16 +31,12 @@ class GameManager:
 
         while not is_terminal and board.move_count <= GameManager.MOVE_LIMIT:
             self._process_move(board, first_agent)
-            self.gui.update(board.board)
-
             is_terminal = board.get_state_info() != StateInfo.IN_PROGRESS
 
             if is_terminal:
                 break
 
             self._process_move(board, second_agent)
-            self.gui.update(board.board)
-
             is_terminal = board.get_state_info() != StateInfo.IN_PROGRESS
 
         result = board.get_state_info()
