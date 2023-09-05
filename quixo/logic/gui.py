@@ -177,6 +177,6 @@ class GUI:
             pg.display.update()
             clock.tick(GUI.FPS)
 
-    def update(self, board: np.ndarray):
+    def show_board(self, board: np.ndarray):
         self._draw_board(board)
         pg.display.update()

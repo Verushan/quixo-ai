@@ -17,4 +17,4 @@ class Move:
     def __repr__(self) -> str:
         str_direction = Direction(self.direction).name
 
-        return f"Square {self.start_square} going {str_direction}"
+        return f"{self.start_square} {str_direction}"

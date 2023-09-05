@@ -14,13 +14,13 @@ class GameManager:
         move = agent.get_move(board)
         self.gui.make_move(board.board, move, board.side_to_play)
         board.make_move(move)
-        print(agent.get_name(), "played", move)
+        print(move)
 
     def play_match(
         self, agent_x: Agent, agent_o: Agent, fen: str = Board.STARTING_FEN
     ) -> None:
         board = Board(fen)
-        self.gui.update(board.board)
+        self.gui.show_board(board.board)
 
         is_terminal = board.get_state_info() != StateInfo.IN_PROGRESS
 
@@ -28,6 +28,9 @@ class GameManager:
             first_agent, second_agent = agent_x, agent_o
         else:
             first_agent, second_agent = agent_o, agent_x
+
+        print(first_agent.get_name(), "vs", second_agent.get_name())
+        print("FEN:", fen)
 
         while not is_terminal and board.move_count <= GameManager.MOVE_LIMIT:
             self._process_move(board, first_agent)
@@ -44,10 +47,11 @@ class GameManager:
 
         while True:
             for event in pg.event.get():
-                if event == pg.QUIT or event == pg.WINDOWCLOSE:
+                if event.type == pg.QUIT or event.type == pg.WINDOWCLOSE:
                     pg.quit()
+                    return
 
-                self.gui.update(board.board)
+            self.gui.show_board(board.board)
 
     @staticmethod
     def print_outcome(state_info: StateInfo) -> None:
