@@ -23,10 +23,17 @@ class HumanAgent(Agent):
             raise ValueError(f"'{direction_str}' is not a valid color")
 
     def get_ui_move(self, board: Board) -> Move:
+        current_frame = pg.display.get_surface().copy()
+        pg.event.clear()
+
         while True:
             direction = None
 
             for event in pg.event.get():
+                if event.type == pg.WINDOWFOCUSGAINED:
+                    pg.display.get_surface().blit(current_frame, (0, 0))
+                    pg.display.update()
+
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_w:
                         direction = Direction.NORTH

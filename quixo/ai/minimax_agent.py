@@ -8,10 +8,16 @@ class MinimaxAgent(Agent):
     def __init__(self) -> None:
         super().__init__()
 
+    def _random_best_move(self, moves: list, scores: list) -> Move:
+        best_score = np.max(scores)
+        best_move_indices = np.where(scores == best_score)[0]
+        best_move_index = np.random.choice(best_move_indices)
+        return moves[best_move_index]
+
     def get_move(self, board: Board) -> Move:
         valid_moves = board.generate_valid_moves()
-        best_score = -MinimaxAgent.MAX
-        best_move = None
+        moves = []
+        scores = []
 
         for move in valid_moves:
             board.make_move(move)
@@ -24,11 +30,10 @@ class MinimaxAgent(Agent):
 
             board.unmake_move(move)
 
-            if curr_score > best_score or best_move is None:
-                best_score = curr_score
-                best_move = move
+            scores.append(curr_score)
+            moves.append(move)
 
-        return best_move
+        return self._random_best_move(moves, scores)
 
     def evaluate(self, board: Board) -> float:
         evaluation = 0
