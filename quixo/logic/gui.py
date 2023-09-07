@@ -11,8 +11,10 @@ class GUI:
     WIDTH = 800
     HEIGHT = 800
     WINDOW_TITLE = "Quixo AI"
-    BACKGROUND_COLOR = (76, 86, 106)
-    PIECE_COLOR = (143, 188, 187)
+    BACKGROUND_COLOR = (59, 66, 82)
+    PIECE_COLOR_BASE = (143, 188, 187)
+    PIECE_X_COLOR = (235, 203, 139)
+    PIECE_O_COLOR = (208, 135, 112)
     PIECE_OUTLINE_WIDTH = 5
     PIECE_OUTLINE_CORNER_RADIUS = 10
     PIECE_WIDTH = WIDTH // Board.BOARD_DIM
@@ -28,7 +30,7 @@ class GUI:
 
         pg.draw.rect(
             self.screen,
-            GUI.PIECE_COLOR,
+            GUI.PIECE_COLOR_BASE,
             rect,
             GUI.PIECE_OUTLINE_WIDTH,
             GUI.PIECE_OUTLINE_CORNER_RADIUS,
@@ -63,13 +65,13 @@ class GUI:
         gfxdraw.aapolygon(
             self.screen,
             (upper_left, upper_right, lower_right, lower_left),
-            GUI.PIECE_COLOR,
+            GUI.PIECE_X_COLOR,
         )
 
         gfxdraw.filled_polygon(
             self.screen,
             (upper_left, upper_right, lower_right, lower_left),
-            GUI.PIECE_COLOR,
+            GUI.PIECE_X_COLOR,
         )
 
     def _draw_x(self, pos: tuple):
@@ -95,8 +97,8 @@ class GUI:
         outline_thickness = 10
         pos = (pos[0] + (GUI.PIECE_WIDTH // 2), pos[1] + (GUI.PIECE_HEIGHT // 2))
 
-        gfxdraw.filled_circle(self.screen, *pos, radius, GUI.PIECE_COLOR)
-        gfxdraw.aacircle(self.screen, *pos, radius, GUI.PIECE_COLOR)
+        gfxdraw.filled_circle(self.screen, *pos, radius, GUI.PIECE_O_COLOR)
+        gfxdraw.aacircle(self.screen, *pos, radius, GUI.PIECE_O_COLOR)
 
         gfxdraw.filled_circle(
             self.screen, *pos, radius - outline_thickness, GUI.BACKGROUND_COLOR
