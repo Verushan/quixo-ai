@@ -16,9 +16,9 @@ jobs:
     - name: PyInstaller Windows
       uses: JackMcKew/pyinstaller-action-windows@python3-10-pyinstaller-5-3
       with:
-        path: src
+        path: .
 
     - uses: actions/upload-artifact@v2
       with:
-        name: my-exe
-        path: . # or path/to/artifact
+        name: quixo-exe
+        path: .
