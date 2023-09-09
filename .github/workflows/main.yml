@@ -1,24 +1,4 @@
-name: Build GUI exe with Pyinstaller
-
-on:
-  workflow_dispatch:
-    inputs:
-      tags:
-        description: 'test build tags'
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Package Application
-      uses: JackMcKew/pyinstaller-action-windows@python3-10-pyinstaller-5-3
-      with:
-        path: .
-
-    - uses: actions/upload-artifact@v2
-      with:
-        name: my-app
-        path: dist/windows
+- name: PyInstaller Windows
+  uses: JackMcKew/pyinstaller-action-windows@main
+    with:
+      path: .
