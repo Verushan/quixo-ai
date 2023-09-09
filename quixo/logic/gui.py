@@ -11,8 +11,8 @@ class GUI:
     WIDTH = 800
     HEIGHT = 800
     WINDOW_TITLE = "Quixo AI"
-    BACKGROUND_COLOR = (59, 66, 82)
-    PIECE_COLOR_BASE = (143, 188, 187)
+    BACKGROUND_COLOR = (67, 76, 94)
+    PIECE_COLOR_OUTLINE = (129, 161, 193)
     PIECE_X_COLOR = (235, 203, 139)
     PIECE_O_COLOR = (208, 135, 112)
     PIECE_OUTLINE_WIDTH = 5
@@ -30,7 +30,7 @@ class GUI:
 
         pg.draw.rect(
             self.screen,
-            GUI.PIECE_COLOR_BASE,
+            GUI.PIECE_COLOR_OUTLINE,
             rect,
             GUI.PIECE_OUTLINE_WIDTH,
             GUI.PIECE_OUTLINE_CORNER_RADIUS,
