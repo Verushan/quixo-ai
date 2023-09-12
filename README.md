@@ -5,6 +5,9 @@ It is recommended to use a virtual environment as shown below
 git clone https://github.com/Elementrix08/quixo-ai.git
 python3 -m venv .env
 source .env/bin/activate
+```
+Install the required packages
+```bash
 pip install -r requirements.txt
 ```
 
