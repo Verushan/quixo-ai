@@ -1,6 +1,16 @@
-from quixo import MinimaxAgent, RandomAgent, GameManager, HumanAgent
+from quixo import (
+    MinimaxAgent,
+    RandomAgent,
+    GameManager,
+    HumanAgent,
+    CenterMinimaxAgent,
+    EdgeMinimax,
+    StateInfo,
+    Agent,
+)
 
-manager = GameManager()
 agent1 = HumanAgent()
 agent2 = MinimaxAgent()
-manager.play_match(agent1, agent2)
+gm = GameManager()
+
+gm.play_match(agent1, agent2)
