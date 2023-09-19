@@ -2,25 +2,40 @@ from .board import Board, StateInfo, Piece
 from .agent import Agent
 from .gui import GUI
 import pygame as pg
+import numpy as np
 
 
 class GameManager:
-    MOVE_LIMIT = 150
+    MOVE_LIMIT = 100
+    TIME_LIMIT_IN_SECONDS = 1.0
 
-    def __init__(self) -> None:
-        self.gui = GUI()
+    def __init__(self, show_ui: bool = True) -> None:
+        self.show_ui = show_ui
+
+        if show_ui:
+            self.gui = GUI()
 
     def _process_move(self, board: Board, agent: Agent):
-        move = agent.get_move(board)
-        self.gui.make_move(board.board, move, board.side_to_play)
+        move = agent.get_move(board, GameManager.TIME_LIMIT_IN_SECONDS)
+
+        if self.show_ui:
+            self.gui.make_move(board.board, move, board.side_to_play)
+
         board.make_move(move)
         print(move)
 
     def play_match(
-        self, agent_x: Agent, agent_o: Agent, fen: str = Board.STARTING_FEN
-    ) -> None:
+        self,
+        agent_x: Agent,
+        agent_o: Agent,
+        fen: str = Board.STARTING_FEN,
+        seed=None,
+    ) -> StateInfo:
+        np.random.seed(seed)
         board = Board(fen)
-        self.gui.show_board(board.board)
+
+        if self.show_ui:
+            self.gui.show_board(board.board)
 
         is_terminal = board.get_state_info() != StateInfo.IN_PROGRESS
 
@@ -28,9 +43,6 @@ class GameManager:
             first_agent, second_agent = agent_x, agent_o
         else:
             first_agent, second_agent = agent_o, agent_x
-
-        print(first_agent.get_name(), "vs", second_agent.get_name())
-        print("FEN:", fen)
 
         while not is_terminal and board.move_count <= GameManager.MOVE_LIMIT:
             self._process_move(board, first_agent)
@@ -43,9 +55,13 @@ class GameManager:
             is_terminal = board.get_state_info() != StateInfo.IN_PROGRESS
 
         result = board.get_state_info()
-        self.print_outcome(result)
 
-        while True:
+        if self.show_ui is False:
+            return result if result != StateInfo.IN_PROGRESS else StateInfo.DRAW
+
+        GameManager.print_outcome(result, first_agent, second_agent)
+
+        while True and self.show_ui:
             for event in pg.event.get():
                 if event.type == pg.QUIT or event.type == pg.WINDOWCLOSE:
                     pg.quit()
@@ -53,13 +69,15 @@ class GameManager:
 
             self.gui.show_board(board.board)
 
+        return result if result != StateInfo.IN_PROGRESS else StateInfo.DRAW
+
     @staticmethod
-    def print_outcome(state_info: StateInfo) -> None:
+    def print_outcome(state_info: StateInfo, agent1: Agent, agent2: Agent) -> None:
         if state_info == StateInfo.DRAW:
             print("DRAW!")
         elif state_info == StateInfo.X_WIN:
-            print("X WINS!")
+            print(agent1.get_name(), "WINS!")
         elif state_info == StateInfo.O_WIN:
-            print("O WINS!")
+            print(agent2.get_name(), "WINS!")
         else:
-            print("GAME IN PROGRESS!")
+            print("DRAW BY {} MOVE LIMIT!".format(GameManager.MOVE_LIMIT))
