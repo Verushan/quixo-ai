@@ -22,3 +22,6 @@ When playing via the GUI, the player simply has to hover any of the outer edge t
 
 ## Match Manager
 Simply changing the object initialized to either agent1 or agent2 in `main.py` will match any two pairs of agents up together.
+
+## Benchmarks
+Within the stats folder, `benchmarks.py` runs a tournament between all currently implemented agents to get stats on the win, loss and draw rates of each agent.
