@@ -4,6 +4,7 @@ import numpy as np
 
 class MinimaxAgent(Agent):
     MAX = 1e6
+    MAX_DEPTH = 3
 
     def __init__(self) -> None:
         super().__init__()
@@ -14,24 +15,25 @@ class MinimaxAgent(Agent):
         best_move_index = np.random.choice(best_move_indices)
         return moves[best_move_index]
 
-    def get_move(self, board: Board) -> Move:
+    def get_move(self, board: Board, time_limit: float) -> Move:
         valid_moves = board.generate_valid_moves()
-        moves = []
-        scores = []
+        alpha, beta = -MinimaxAgent.MAX, MinimaxAgent.MAX
+        scores, moves = [], []
 
         for move in valid_moves:
             board.make_move(move)
 
             curr_score = self.minimax(
                 board=board,
-                depth=2,
+                depth=3,
+                alpha=alpha,
+                beta=beta,
                 is_maximizing=False,
             )
 
-            board.unmake_move(move)
-
-            scores.append(curr_score)
             moves.append(move)
+            scores.append(curr_score)
+            board.unmake_move(move)
 
         return self._random_best_move(moves, scores)
 
@@ -48,7 +50,14 @@ class MinimaxAgent(Agent):
 
         return evaluation
 
-    def minimax(self, board: Board, depth: int, is_maximizing: bool = False):
+    def minimax(
+        self,
+        board: Board,
+        depth: int,
+        alpha: int,
+        beta: int,
+        is_maximizing: bool,
+    ):
         state_info = board.get_state_info()
 
         if state_info == StateInfo.DRAW:
@@ -57,18 +66,20 @@ class MinimaxAgent(Agent):
         if state_info != StateInfo.IN_PROGRESS:
             result = 0
 
-            if board.side_to_play == Piece.X and state_info == StateInfo.X_WIN:
-                result = MinimaxAgent.MAX
-            elif board.side_to_play == Piece.O and state_info == StateInfo.O_WIN:
-                result = MinimaxAgent.MAX
+            if board.side_to_play == Piece.X and state_info == StateInfo.O_WIN:
+                result = -MinimaxAgent.MAX - depth
+            elif board.side_to_play == Piece.O and state_info == StateInfo.X_WIN:
+                result = -MinimaxAgent.MAX - depth
             else:
-                result = -MinimaxAgent.MAX
+                result = MinimaxAgent.MAX + depth
 
-            return result - depth if is_maximizing else -result + depth
+            result = result if is_maximizing else -result
+            return result
 
         if depth == 0:
             evaluation = self.evaluate(board)
-            return evaluation if is_maximizing else -evaluation
+            result = evaluation if is_maximizing else -evaluation
+            return result
 
         valid_moves = board.generate_valid_moves()
 
@@ -82,10 +93,19 @@ class MinimaxAgent(Agent):
                 curr_score = self.minimax(
                     board=board,
                     depth=depth - 1,
+                    alpha=alpha,
+                    beta=beta,
                     is_maximizing=False,
                 )
+
                 board.unmake_move(move)
+
                 best_score = max(best_score, curr_score)
+                alpha = max(alpha, curr_score)
+
+                if beta <= alpha:
+                    break
+
         else:
             best_score = MinimaxAgent.MAX
 
@@ -94,10 +114,17 @@ class MinimaxAgent(Agent):
                 curr_score = self.minimax(
                     board=board,
                     depth=depth - 1,
+                    alpha=alpha,
+                    beta=beta,
                     is_maximizing=True,
                 )
+
                 board.unmake_move(move)
                 best_score = min(best_score, curr_score)
+                beta = min(beta, curr_score)
+
+                if beta <= alpha:
+                    break
 
         return best_score
 

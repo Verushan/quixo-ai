@@ -22,7 +22,23 @@ class HumanAgent(Agent):
         except KeyError:
             raise ValueError(f"'{direction_str}' is not a valid color")
 
-    def get_ui_move(self, board: Board) -> Move:
+    def _calculate_move(self, board: Board, direction: Direction) -> Move:
+        x, y = pg.mouse.get_pos()
+        row = Board.BOARD_DIM - (y // GUI.PIECE_HEIGHT) - 1
+        col = x // GUI.PIECE_WIDTH
+        square = row * Board.BOARD_DIM + col
+
+        if square in Board.OUTER_INDICES:
+            piece = board.board[square]
+            piece_index = np.where(Board.OUTER_INDICES == square)[0][0]
+
+            if piece == board.side_to_play or piece == Piece.EMPTY:
+                if direction in Board.VALID_MOVES_FOR_INDICES[piece_index]:
+                    return Move(square, direction)
+                else:
+                    print("INVALID MOVE")
+
+    def _get_ui_move(self, board: Board) -> Move:
         current_frame = pg.display.get_surface().copy()
         pg.event.clear()
 
@@ -45,29 +61,13 @@ class HumanAgent(Agent):
                         direction = Direction.EAST
 
                     if direction != None:
-                        x, y = pg.mouse.get_pos()
-                        row = Board.BOARD_DIM - (y // GUI.PIECE_HEIGHT) - 1
-                        col = x // GUI.PIECE_WIDTH
-                        square = row * Board.BOARD_DIM + col
+                        return self._calculate_move(board, direction)
 
-                        if square in Board.OUTER_INDICES:
-                            piece = board.board[square]
-                            piece_index = np.where(Board.OUTER_INDICES == square)[0][0]
-
-                            if piece == board.side_to_play or piece == Piece.EMPTY:
-                                if (
-                                    direction
-                                    in Board.VALID_MOVES_FOR_INDICES[piece_index]
-                                ):
-                                    return Move(square, direction)
-                                else:
-                                    print("INVALID MOVE")
-
-    def get_move(self, board: Board) -> Move:
+    def get_move(self, board: Board, time_limit: float) -> Move:
         move = None
 
         if self.use_ui_controls:
-            return self.get_ui_move(board)
+            return self._get_ui_move(board)
         else:
             square = int(self.clean_input("Enter the square index "))
             direction = self.clean_input(
@@ -76,6 +76,7 @@ class HumanAgent(Agent):
             direction = self.string_to_color(direction)
 
             move = Move(square, direction)
+
         return move
 
     def get_name(self) -> str:
