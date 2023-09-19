@@ -20,9 +20,9 @@ class GameManager:
 
         if self.show_ui:
             self.gui.make_move(board.board, move, board.side_to_play)
+            print(move)
 
         board.make_move(move)
-        print(move)
 
     def play_match(
         self,
