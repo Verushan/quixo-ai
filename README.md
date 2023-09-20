@@ -15,7 +15,7 @@ Once these commands have been run the environment has been set up. Now run `main
 ```python
 python3 main.py
 ```
-`main.py` will create a game via the `MatchManager` between you and the `Minimax` agent.
+`main.py` will create a game via the `MatchManager` between you and the `MinimaxAgent` agent.
 
 ## User Interface
 When playing via the GUI, the player simply has to hover any of the outer edge tiles which are their own shape or unturned and press one of the directional keys W, A, S, D which correspond to North, West, South, East respectively.

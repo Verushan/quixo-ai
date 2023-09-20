@@ -1,4 +1,4 @@
-from .board import Board, StateInfo
+from .board import Board
 from .agent import Agent
 from .move import Move, Direction
 from .game_manager import GameManager

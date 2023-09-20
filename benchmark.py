@@ -6,9 +6,10 @@ from quixo import (
     GameManager,
     HumanAgent,
     CenterMinimaxAgent,
-    EdgeMinimax,
-    StateInfo,
+    EdgeMinimaxAgent,
+    MonteCarloAgent,
     Agent,
+    Piece,
 )
 
 import numpy as np
@@ -34,9 +35,9 @@ class Tournament:
         value = (0, 0, 0, 0)
         result = self.manager.play_match(agent_x, agent_o)
 
-        if result == StateInfo.X_WIN:
+        if result == Piece.X:
             value = (agent_x_index, Tournament.WIN, agent_o_index, Tournament.LOSS)
-        elif result == StateInfo.O_WIN:
+        elif result == Piece.O:
             value = (agent_o_index, Tournament.WIN, agent_x_index, Tournament.LOSS)
         else:
             value = (agent_o_index, Tournament.DRAW, agent_x_index, Tournament.DRAW)
@@ -76,9 +77,15 @@ class Tournament:
         result = {}
 
         for index, agent in enumerate(agents):
-            win_rate = (stats[index, Tournament.WIN] / stats[index, :].sum()) * 100
-            loss_rate = (stats[index, Tournament.LOSS] / stats[index, :].sum()) * 100
-            draw_rate = (stats[index, Tournament.DRAW] / stats[index, :].sum()) * 100
+            win_rate = np.round(
+                (stats[index, Tournament.WIN] / stats[index, :].sum()) * 100, 2
+            )
+            loss_rate = np.round(
+                (stats[index, Tournament.LOSS] / stats[index, :].sum()) * 100, 2
+            )
+            draw_rate = np.round(
+                (stats[index, Tournament.DRAW] / stats[index, :].sum()) * 100, 2
+            )
             result[agent.get_name()] = "rates [win, loss, draw] [{}%, {}%, {}%]".format(
                 win_rate, loss_rate, draw_rate
             )
@@ -87,7 +94,12 @@ class Tournament:
 
 
 def main():
-    agents = [MinimaxAgent(), EdgeMinimax(), CenterMinimaxAgent()]
+    agents = [
+        MinimaxAgent(),
+        EdgeMinimaxAgent(),
+        CenterMinimaxAgent(),
+        MonteCarloAgent(),
+    ]
 
     tournament = Tournament()
     results = tournament.start(agents)

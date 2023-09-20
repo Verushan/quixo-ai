@@ -4,13 +4,13 @@ from quixo import (
     GameManager,
     HumanAgent,
     CenterMinimaxAgent,
-    EdgeMinimax,
-    StateInfo,
+    EdgeMinimaxAgent,
+    MonteCarloAgent,
     Agent,
 )
 
-agent1 = HumanAgent()
-agent2 = MinimaxAgent()
+agent1 = MinimaxAgent()
+agent2 = MonteCarloAgent()
 gm = GameManager()
 
 gm.play_match(agent1, agent2)

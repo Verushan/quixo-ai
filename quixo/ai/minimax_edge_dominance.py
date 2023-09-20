@@ -4,7 +4,7 @@ from ..logic import Piece, Board
 import numpy as np
 
 
-class EdgeMinimax(MinimaxAgent):
+class EdgeMinimaxAgent(MinimaxAgent):
     def __init__(self) -> None:
         super().__init__()
 
@@ -29,4 +29,4 @@ class EdgeMinimax(MinimaxAgent):
         return evaluation + edge_evaluation
 
     def get_name(self) -> str:
-        return "Edge Dominance Minimax Agent"
+        return "Edge Dominance MinimaxAgent Agent"

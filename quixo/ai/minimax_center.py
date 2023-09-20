@@ -31,4 +31,4 @@ class CenterMinimaxAgent(MinimaxAgent):
         return evaluation + center_evaluation
 
     def get_name(self) -> str:
-        return "Centre Dominance Minimax Agent"
+        return "Centre Dominance MinimaxAgent Agent"

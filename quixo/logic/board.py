@@ -5,13 +5,6 @@ from enum import IntEnum
 from tabulate import tabulate
 
 
-class StateInfo(IntEnum):
-    X_WIN = 0
-    O_WIN = 1
-    DRAW = 2
-    IN_PROGRESS = 3
-
-
 class Board:
     BOARD_DIM = 5
     BOARD_LEN = 25
@@ -59,7 +52,7 @@ class Board:
         self.side_to_play = Piece.X if fen_parts[1] == "X" else Piece.O
         self.move_count = int(fen_parts[2])
         self.board = np.full(
-            shape=(Board.BOARD_LEN,), fill_value=Piece.EMPTY, dtype=np.int8
+            shape=(Board.BOARD_LEN,), fill_value=Piece.NONE, dtype=np.int8
         )
 
         col = 0
@@ -80,7 +73,7 @@ class Board:
             elif c == "O":
                 self.board[row * Board.BOARD_DIM + col] = Piece.O
             else:
-                self.board[row * Board.BOARD_DIM + col] = Piece.EMPTY
+                self.board[row * Board.BOARD_DIM + col] = Piece.NONE
 
             col += 1
 
@@ -128,7 +121,7 @@ class Board:
     def _sum_line(self, start, end, step) -> int:
         return self.board[start:end:step].sum()
 
-    def get_state_info(self) -> StateInfo:
+    def get_winner(self) -> Piece:
         x_line = False
         o_line = False
 
@@ -176,22 +169,22 @@ class Board:
 
         if x_line and o_line:
             if self.side_to_play == Piece.X:
-                return StateInfo.X_WIN
+                return Piece.X
             else:
-                return StateInfo.O_WIN
+                return Piece.O
 
         if x_line:
-            return StateInfo.X_WIN
+            return Piece.X
 
         if o_line:
-            return StateInfo.O_WIN
+            return Piece.O
 
-        return StateInfo.IN_PROGRESS
+        return Piece.NONE
 
     def make_move(self, move: Move) -> None:
         moving_piece = self.board[move.start_square]
 
-        if moving_piece == Piece.EMPTY:
+        if moving_piece == Piece.NONE:
             moving_piece = self.side_to_play
             move.was_turned = True
 
@@ -211,7 +204,7 @@ class Board:
         moving_direction = move.direction
 
         if move.was_turned:
-            moving_piece = Piece.EMPTY
+            moving_piece = Piece.NONE
             move.was_turned = False
 
         if moving_direction == Direction.NORTH:
@@ -229,7 +222,7 @@ class Board:
         for index, indice in enumerate(self.OUTER_INDICES):
             piece = self.board[indice]
 
-            if piece == self.side_to_play or piece == Piece.EMPTY:
+            if piece == self.side_to_play or piece == Piece.NONE:
                 for direction in self.VALID_MOVES_FOR_INDICES[index]:
                     valid_moves.append(Move(indice, direction))
 
@@ -257,7 +250,7 @@ class Board:
             else:
                 print("Side to play: O")
 
-            state_info = self.get_state_info()
-            print("Terminal status:", StateInfo(state_info).name)
+            winner = self.get_winner()
+            print("Terminal status:", Piece(winner).name)
 
         print()

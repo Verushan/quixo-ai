@@ -32,11 +32,12 @@ class HumanAgent(Agent):
             piece = board.board[square]
             piece_index = np.where(Board.OUTER_INDICES == square)[0][0]
 
-            if piece == board.side_to_play or piece == Piece.EMPTY:
+            if piece == board.side_to_play or piece == Piece.NONE:
                 if direction in Board.VALID_MOVES_FOR_INDICES[piece_index]:
                     return Move(square, direction)
                 else:
                     print("INVALID MOVE")
+                    return None
 
     def _get_ui_move(self, board: Board) -> Move:
         current_frame = pg.display.get_surface().copy()
@@ -61,7 +62,10 @@ class HumanAgent(Agent):
                         direction = Direction.EAST
 
                     if direction != None:
-                        return self._calculate_move(board, direction)
+                        move = self._calculate_move(board, direction)
+
+                        if move != None:
+                            return move
 
     def get_move(self, board: Board, time_limit: float) -> Move:
         move = None
@@ -80,4 +84,4 @@ class HumanAgent(Agent):
         return move
 
     def get_name(self) -> str:
-        return "Human Agent"
+        return "HumanAgent Agent"

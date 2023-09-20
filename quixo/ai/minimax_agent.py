@@ -1,4 +1,4 @@
-from ..logic import Agent, Move, Piece, Board, StateInfo
+from ..logic import Agent, Move, Piece, Board
 import numpy as np
 
 
@@ -23,9 +23,9 @@ class MinimaxAgent(Agent):
         for move in valid_moves:
             board.make_move(move)
 
-            curr_score = self.minimax(
+            curr_score = self.MinimaxAgent(
                 board=board,
-                depth=3,
+                depth=2,
                 alpha=alpha,
                 beta=beta,
                 is_maximizing=False,
@@ -50,7 +50,7 @@ class MinimaxAgent(Agent):
 
         return evaluation
 
-    def minimax(
+    def MinimaxAgent(
         self,
         board: Board,
         depth: int,
@@ -58,17 +58,14 @@ class MinimaxAgent(Agent):
         beta: int,
         is_maximizing: bool,
     ):
-        state_info = board.get_state_info()
+        winner = board.get_winner()
 
-        if state_info == StateInfo.DRAW:
-            return 0
-
-        if state_info != StateInfo.IN_PROGRESS:
+        if winner != Piece.NONE:
             result = 0
 
-            if board.side_to_play == Piece.X and state_info == StateInfo.O_WIN:
+            if board.side_to_play == Piece.X and winner == Piece.O:
                 result = -MinimaxAgent.MAX - depth
-            elif board.side_to_play == Piece.O and state_info == StateInfo.X_WIN:
+            elif board.side_to_play == Piece.O and winner == Piece.X:
                 result = -MinimaxAgent.MAX - depth
             else:
                 result = MinimaxAgent.MAX + depth
@@ -90,7 +87,7 @@ class MinimaxAgent(Agent):
 
             for move in valid_moves:
                 board.make_move(move)
-                curr_score = self.minimax(
+                curr_score = self.MinimaxAgent(
                     board=board,
                     depth=depth - 1,
                     alpha=alpha,
@@ -111,7 +108,7 @@ class MinimaxAgent(Agent):
 
             for move in valid_moves:
                 board.make_move(move)
-                curr_score = self.minimax(
+                curr_score = self.MinimaxAgent(
                     board=board,
                     depth=depth - 1,
                     alpha=alpha,
@@ -129,4 +126,4 @@ class MinimaxAgent(Agent):
         return best_score
 
     def get_name(self) -> str:
-        return "Minimax Agent"
+        return "MinimaxAgent Agent"
