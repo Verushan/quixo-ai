@@ -19,12 +19,13 @@ class Node:
 
 class MonteCarloAgent(Agent):
     MAX = 1e6
-    C = 2
+    C = np.sqrt(2)
     SIMULATION_MOVE_LIMIT = 100
 
-    def __init__(self) -> None:
+    def __init__(self, num_iterations: int) -> None:
         super().__init__()
         self.root = Node(None)
+        self.num_iterations = num_iterations
 
     def _get_ucb(self, node: Node) -> float:
         if node.visited == 0:
@@ -145,7 +146,7 @@ class MonteCarloAgent(Agent):
     def get_move(self, board: Board, time_limit: float) -> Move:
         self.root = Node(None)
 
-        for _ in range(1200):
+        for _ in range(self.num_iterations):
             self._perform_iteration(board)
 
         def win_visit_ratio(node: Node) -> float:
@@ -155,4 +156,4 @@ class MonteCarloAgent(Agent):
         return best_node.move
 
     def get_name(self) -> str:
-        return "Monte Carlo Agent"
+        return "Monte Carlo Agent " + str(self.num_iterations) + " iterations"

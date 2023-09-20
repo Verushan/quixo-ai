@@ -5,8 +5,8 @@ import numpy as np
 
 
 class EdgeMinimaxAgent(MinimaxAgent):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, depth: int) -> None:
+        super().__init__(depth)
 
     def evaluate(self, board: Board) -> float:
         evaluation = super().evaluate(board)
@@ -29,4 +29,4 @@ class EdgeMinimaxAgent(MinimaxAgent):
         return evaluation + edge_evaluation
 
     def get_name(self) -> str:
-        return "Edge Dominance MinimaxAgent Agent"
+        return "Edge Minimax Agent Depth " + str(self.depth)

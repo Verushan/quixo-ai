@@ -30,7 +30,7 @@ class GameManager:
         agent_o: Agent,
         fen: str = Board.STARTING_FEN,
         seed=None,
-    ) -> Piece:
+    ) -> tuple:
         np.random.seed(seed)
         board = Board(fen)
 
@@ -53,7 +53,7 @@ class GameManager:
         result = board.get_winner()
 
         if self.show_ui is False:
-            return result if result != Piece.NONE else Piece.NONE
+            return result, board.move_count
 
         GameManager.print_outcome(result, first_agent, second_agent)
 
@@ -65,7 +65,7 @@ class GameManager:
 
             self.gui.show_board(board.board)
 
-        return result if result != Piece.NONE else Piece.NONE
+        return result, board.move_count
 
     @staticmethod
     def print_outcome(winner: Piece, agent1: Agent, agent2: Agent) -> None:

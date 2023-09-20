@@ -9,8 +9,8 @@ from quixo import (
     Agent,
 )
 
-agent1 = MinimaxAgent()
-agent2 = MonteCarloAgent()
+agent1 = HumanAgent()
+agent2 = MonteCarloAgent(100)
 gm = GameManager()
 
 gm.play_match(agent1, agent2)

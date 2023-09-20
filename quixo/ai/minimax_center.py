@@ -7,8 +7,8 @@ import numpy as np
 class CenterMinimaxAgent(MinimaxAgent):
     CENTER_INDICES = np.array([6, 7, 8, 11, 12, 13, 16, 17, 18])
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, depth: int) -> None:
+        super().__init__(depth)
 
     def evaluate(self, board: Board) -> float:
         evaluation = super().evaluate(board)
@@ -31,4 +31,4 @@ class CenterMinimaxAgent(MinimaxAgent):
         return evaluation + center_evaluation
 
     def get_name(self) -> str:
-        return "Centre Dominance MinimaxAgent Agent"
+        return "Centre Minimax Agent Depth " + str(self.depth)

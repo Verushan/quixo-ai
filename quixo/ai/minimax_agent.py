@@ -6,8 +6,9 @@ class MinimaxAgent(Agent):
     MAX = 1e6
     MAX_DEPTH = 3
 
-    def __init__(self) -> None:
+    def __init__(self, depth: int) -> None:
         super().__init__()
+        self.depth = depth
 
     def _random_best_move(self, moves: list, scores: list) -> Move:
         best_score = np.max(scores)
@@ -23,9 +24,9 @@ class MinimaxAgent(Agent):
         for move in valid_moves:
             board.make_move(move)
 
-            curr_score = self.MinimaxAgent(
+            curr_score = self.minimax(
                 board=board,
-                depth=2,
+                depth=self.depth - 1,
                 alpha=alpha,
                 beta=beta,
                 is_maximizing=False,
@@ -50,7 +51,7 @@ class MinimaxAgent(Agent):
 
         return evaluation
 
-    def MinimaxAgent(
+    def minimax(
         self,
         board: Board,
         depth: int,
@@ -87,7 +88,7 @@ class MinimaxAgent(Agent):
 
             for move in valid_moves:
                 board.make_move(move)
-                curr_score = self.MinimaxAgent(
+                curr_score = self.minimax(
                     board=board,
                     depth=depth - 1,
                     alpha=alpha,
@@ -108,7 +109,7 @@ class MinimaxAgent(Agent):
 
             for move in valid_moves:
                 board.make_move(move)
-                curr_score = self.MinimaxAgent(
+                curr_score = self.minimax(
                     board=board,
                     depth=depth - 1,
                     alpha=alpha,
@@ -126,4 +127,4 @@ class MinimaxAgent(Agent):
         return best_score
 
     def get_name(self) -> str:
-        return "MinimaxAgent Agent"
+        return "MinimaxAgent Agent Depth " + str(self.depth)
