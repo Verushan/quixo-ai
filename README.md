@@ -1,5 +1,4 @@
-# Implementation of the Quixo board game
-## Usage
+# Usage
 It is recommended to use a virtual environment as shown below
 ```bash
 git clone https://github.com/Elementrix08/quixo-ai.git
@@ -11,16 +10,22 @@ Install the required packages
 pip install -r requirements.txt
 ```
 
-Once these commands have been run the environment has been set up. Now run `main.py` with 
+Once these commands have been run the environment has been set up. Now run `main.py` with
 ```python
 python3 main.py
 ```
 `main.py` will create a game via the `MatchManager` between you and the `MinimaxAgent` agent.
 
-## User Interface
+# User Interface
 When playing via the GUI, the player simply has to hover any of the outer edge tiles which are their own shape or unturned and press one of the directional keys W, A, S, D which correspond to North, West, South, East respectively.
 
-## Match Manager
+# Agents
+There are currently 3 agents which are:
+- The HumanAgent which is used by the runner of the code to interact with the game
+- The Minimax agent which runs on the Minimax algorithm
+- The Monte Carlo agent which makes of the Monte Carlo tree search algorithm
+
+# Match Manager
 Simply changing the object initialized to either agent1 or agent2 in `main.py` will match any two pairs of agents up together.
 
 ## Benchmarks
